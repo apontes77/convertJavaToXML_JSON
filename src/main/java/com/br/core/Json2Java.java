@@ -23,7 +23,5 @@ public class Json2Java {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-
     }
 }

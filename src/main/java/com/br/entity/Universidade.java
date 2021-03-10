@@ -3,6 +3,7 @@ package com.br.entity;
 
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,28 +12,23 @@ import java.util.Objects;
 
 @XStreamAlias("universidade")
 public class Universidade implements Serializable {
-    @Override
-    public String toString() {
-        return "Universidade{" +
-                "id=" + id +
-                ", sigla='" + sigla + '\'' +
-                ", nome='" + nome + '\'' +
-                ", endereco='" + endereco + '\'' +
-                ", site='" + site + '\'' +
-                '}';
-    }
+
 
     private  Integer id;
     private  String sigla;
     private  String nome;
     private  String endereco;
     private  String site;
+    @XStreamImplicit
+    @XStreamAlias("cursos")
+    private List<Curso> cursos = new ArrayList<>();
 
-    public Universidade(Integer id, String sigla, String nome, String site) {
+    public Universidade(Integer id, String sigla, String nome, String site, String endereco) {
         this.id = id;
         this.sigla = sigla;
         this.nome = nome;
         this.site = site;
+        this.endereco = endereco;
     }
 
     public Universidade(){}
@@ -84,6 +80,25 @@ public class Universidade implements Serializable {
 
     public void setSite(String site) {
         this.site = site;
+    }
+
+    public List<Curso> getCursos() {
+        return cursos;
+    }
+
+    public void setCursos(List<Curso> cursos) {
+        this.cursos = cursos;
+    }
+
+    @Override
+    public String toString() {
+        return "Universidade{" +
+                "id=" + id +
+                ", sigla='" + sigla + '\'' +
+                ", nome='" + nome + '\'' +
+                ", endereco='" + endereco + '\'' +
+                ", site='" + site + '\'' +
+                '}';
     }
 
 

@@ -12,27 +12,24 @@ import java.util.List;
 public class Aluno implements Serializable {
 
     private  String cpf;
-
-
     private  String nome;
-
-
     private  String dataNascimento;
 
-
+    @XStreamAlias("enderecos")
     private  List<String> enderecos = new ArrayList<>();
-    private List<String> telefones = new ArrayList<>();
-
-    private  Curso curso;
+    @XStreamAlias("telefones")
+    private  List<String> telefones = new ArrayList<>();
 
 
     private  Integer id;
 
-    public Aluno(Integer id, String cpf, String nome, String dataNascimento) {
+    public Aluno(Integer id, String cpf, String nome, String dataNascimento, List<String> enderecos, List<String> telefones) {
         this.id = id;
         this.cpf = cpf;
         this.nome = nome;
         this.dataNascimento = dataNascimento;
+        this.enderecos = enderecos;
+        this.telefones = telefones;
     }
 
     public Aluno() {
@@ -63,10 +60,6 @@ public class Aluno implements Serializable {
         return telefones;
     }
 
-    public Curso getCurso() {
-        return curso;
-    }
-
 
     public void setId(Integer id) {
         this.id = id;
@@ -88,13 +81,6 @@ public class Aluno implements Serializable {
     public void setDataNascimento(String dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
-
-
-
-    public void setCurso(Curso curso) {
-        this.curso = curso;
-    }
-
 
 
     public void setEnderecos(List<String> enderecos) {

@@ -2,6 +2,7 @@ package com.br.entity;
 
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,23 +10,16 @@ import java.util.List;
 
 @XStreamAlias("curso")
 public class Curso implements Serializable {
-    @Override
-    public String toString() {
-        return "Curso{" +
-                "id=" + id +
-                ", sigla='" + sigla + '\'' +
-                ", nome='" + nome + '\'' +
-                ", professores=" + professores +
-                ", alunos=" + alunos +
-                '}';
-    }
+
 
     private  Integer id;
     private  String sigla;
     private  String nome;
-
+    @XStreamImplicit
+    @XStreamAlias("professores")
     private  List<Professor> professores = new ArrayList<>();
-
+    @XStreamImplicit
+    @XStreamAlias("alunos")
     private  List<Aluno> alunos = new ArrayList<>();
 
     public Curso(Integer id, String sigla, String nome) {
@@ -83,6 +77,17 @@ public class Curso implements Serializable {
 
     public void setAlunos(List<Aluno> alunos) {
         this.alunos = alunos;
+    }
+
+    @Override
+    public String toString() {
+        return "Curso{" +
+                "id=" + id +
+                ", sigla='" + sigla + '\'' +
+                ", nome='" + nome + '\'' +
+                ", professores=" + professores +
+                ", alunos=" + alunos +
+                '}';
     }
 
 }

@@ -12,26 +12,18 @@ public class Professor implements Serializable {
     private  Integer id;
     private  String cpf;
     private  String nome;
-
+    @XStreamAlias("enderecos")
     private  List<String> enderecos = new ArrayList<>();
-
+    @XStreamAlias("telefones")
     private  List<String> telefones = new ArrayList<>();
 
-    public  Curso getCurso() {
-        return curso;
-    }
 
-    public void setCurso(Curso curso) {
-        this.curso = curso;
-    }
-
-    private Curso curso;
-
-
-    public Professor(Integer id, String cpf, String nome) {
+    public Professor(Integer id, String cpf, String nome, List<String> telefones, List<String> enderecos) {
         this.id = id;
         this.cpf = cpf;
         this.nome = nome;
+        this.telefones = telefones;
+        this.enderecos = enderecos;
     }
 
     public Professor() {

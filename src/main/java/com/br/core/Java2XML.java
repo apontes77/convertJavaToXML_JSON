@@ -5,63 +5,59 @@ import com.br.entity.Curso;
 import com.br.entity.Professor;
 import com.br.entity.Universidade;
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.StaxDriver;
 
-
-
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public class Java2XML {
 
     public static void main(String[] args) throws IOException {
-        Universidade universidade = new Universidade();
-        Curso curso1 = new Curso();
-        Professor professor1 = new Professor();
-        Aluno aluno1 = new Aluno();
+        Universidade universidade =
+                    new Universidade(1, "PUC GOIAS", "PUC", "pucgoias.edu.br", "Av. Universitária, s/n, Setor Leste Universitário");
+        Curso curso1 = new Curso(1,"CMP1234", "Ciência da Computação");
+        Curso curso2 = new Curso(2, "CMP3214", "Engenharia");
+        Professor professor1 =
+                new Professor(1, "123.456.789-43", "Juscelino", Arrays.asList("Av. Universitária"), Arrays.asList("(23)123456789"));
+        Aluno aluno1 =
+                new Aluno(1, "Steve Jobs", "123.123.123-43", "01-01-1954", Arrays.asList("(62)145639871"), Arrays.asList("Av. Ipiranga, s/n"));
 
-        universidade.setId(1);
-        universidade.setNome("PUC GOIAS");
-        universidade.setSigla("PUC");
-        universidade.setSite("pucgoias.edu.br");
-        universidade.setEndereco("Av. Universitária, s/n, Setor Leste Universitário");
 
-        curso1.setId(1);
-        curso1.setNome("Ciência da Computação");
-        curso1.setSigla("CMP1234");
+        Professor professor2 =
+                new Professor(1, "123.456.789-43", "Jobs", Arrays.asList("Av. Universitária"), Arrays.asList("(23)123456789"));
+        Aluno aluno2 =
+                new Aluno(1, "Gates", "123.123.123-43", "01-01-1954", Arrays.asList("(62)145639871"), Arrays.asList("Av. Ipiranga, s/n"));
 
-        professor1.setId(1);
-        professor1.setNome("Juscelino");
-        professor1.setCpf("123.456.789-43");
-        professor1.setEnderecos(Arrays.asList("Av. Universitária"));
-        professor1.setTelefones(Arrays.asList("(23)123456789"));
 
-        aluno1.setId(1);
-        aluno1.setNome("Steve Jobs");
-        aluno1.setCpf("123.123.123-43");
-        aluno1.setDataNascimento("01-01-1954");
-        aluno1.setTelefones(Arrays.asList("(62)145639871"));
-        aluno1.setEnderecos(Arrays.asList("Av. Ipiranga, s/n"));
+        curso1.setAlunos((Arrays.asList(aluno1, aluno2)));
+        curso1.setProfessores(Arrays.asList(professor1, professor2));
 
-        professor1.setCurso((curso1));
-        aluno1.setCurso(curso1);
+        curso2.setAlunos((Arrays.asList(aluno1, aluno2)));
+        curso2.setProfessores(Arrays.asList(professor1, professor2));
 
-        curso1.setAlunos((Arrays.asList(aluno1)));
-        curso1.setProfessores(Arrays.asList(professor1));
+        universidade.setCursos(Arrays.asList(curso1, curso2));
 
         XStream xStream = new XStream();
-        xStream.alias("universidade", Universidade.class);
-        xStream.alias("curso1", Curso.class);
-        xStream.alias("aluno1", Aluno.class);
-        xStream.alias("professor1", Professor.class);
+        xStream.processAnnotations(Universidade.class);
+        xStream.processAnnotations(Curso.class);
+        xStream.processAnnotations(Professor.class);
+        xStream.processAnnotations(Aluno.class);
 
-        System.out.println(xStream.toXML(universidade));
-        System.out.println(xStream.toXML(curso1));
-        System.out.println(xStream.toXML(aluno1));
-        System.out.println(xStream.toXML(professor1));
+        xStream.alias("universidade",Universidade.class);
+        xStream.alias("curso",Curso.class);
+        xStream.alias("professor", Professor.class);
+        xStream.alias("aluno", Aluno.class);
+
+        xStream.addImplicitCollection(Universidade.class, "cursos");
+        xStream.addImplicitCollection(Curso.class, "professores");
+        xStream.addImplicitCollection(Curso.class, "alunos");
+        xStream.addImplicitCollection(Aluno.class, "enderecos");
+        xStream.addImplicitCollection(Aluno.class, "telefones");
+        xStream.addImplicitCollection(Professor.class, "enderecos");
+        xStream.addImplicitCollection(Professor.class, "telefones");
+
+        String universidadeXML = xStream.toXML(universidade);
+        System.out.println(universidadeXML);
 
     }
 }
